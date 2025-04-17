@@ -1,0 +1,137 @@
+.table-container {
+    padding: 20px;
+    overflow-x: auto;
+  }
+  
+  .mat-elevation-z8 {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .header-row {
+    background-color: #3f51b5;
+  }
+  
+  .header-cell {
+    color: white !important;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .row {
+    transition: background-color 0.2s;
+  }
+  
+  .row:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .cell {
+    padding: 12px 16px !important;
+    font-size: 13px;
+  }
+  
+  .description-cell {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .price-cell {
+    font-weight: bold;
+    color: #388e3c; 
+  }
+  
+  .rating-cell {
+    //display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .rating-cell mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #ffc107;
+  }
+  
+  .tags-cell {
+    max-width: 200px;
+  }
+  
+  .tag-chip {
+    margin: 2px !important;
+    font-size: 11px;
+    background-color: #e0e0e0;
+  }
+  
+  .brand-cell {
+    font-weight: 500;
+  }
+  
+  .brand-badge {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+
+  .row:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .rating-icon {
+    display: flex;
+    align-items: center;
+  }
+  
+  .rating-icon mat-icon {
+    color: #ffc107; 
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+  }
+  
+  .rating-icon .rating-value {
+    margin-left: 8px;
+    color: #666;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+  }
+
+.search {
+  position: relative;
+  z-index: 1;
+  width: 19%;
+  transform: translate(210%, -50%);
+}
+
+.search::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #4f46e5, #a855f7);
+  transform: scaleX(0);
+  transform-origin: bottom left;
+  transition: transform 0.3s ease;
+  z-index: 2;
+}
+
+.search:focus-within::after {
+  transform: scaleX(1);
+}
+
+.is-searching .search {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234f46e5"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z" opacity=".2"/><path d="M12 2a10 10 0 0110 10h-2a8 8 0 00-8-8V2z"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></path></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+}

@@ -1,0 +1,64 @@
+<!-- <form class="d-flex" role="search">
+  <input [(ngModel)]="title" (ngModelChange)="onSearch()" class="form-control me-2" type="search" placeholder="Search By Title" aria-label="Search">
+  <button class="btn btn-outline-success" type="submit">Search</button>
+</form> -->
+<div class="search mt-5 mb-4" [class.is-searching]="isLoading">
+  <input type="text" [(ngModel)]="title" (ngModelChange)="isSearching()" placeholder="Search Products By Title..." class="form-control"
+  />
+</div>
+<div>
+  <div class="table-container ps-10">
+    <table mat-table [dataSource]="data" class="mat-elevation-z8">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef class="header-cell"> Title </th>
+        <td mat-cell *matCellDef="let product" class="cell"> {{product.title}} </td>
+      </ng-container>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef class="header-cell"> Description </th>
+        <td mat-cell *matCellDef="let product" class="cell"> {{product.description}} </td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef class="header-cell"> Price </th>
+        <td mat-cell *matCellDef="let product" class="cell"> {{product.price}} </td>
+      </ng-container>
+      <ng-container matColumnDef="rating">
+        <th mat-header-cell *matHeaderCellDef class="header-cell"> Rating </th>
+        <td mat-cell *matCellDef="let product" class="cell">          
+          <div class="rating-icon">
+            <div *ngFor="let star of [1,2,3,4,5]" class="star-container">
+              <mat-icon *ngIf="product?.rating >= star">star</mat-icon>
+              
+              <mat-icon *ngIf="product?.rating >= (star - 0.4) && product?.rating < star">star_half</mat-icon>            
+              <mat-icon *ngIf="product?.rating < (star - 0.4)">star_border</mat-icon>
+            </div>
+            <span class="rating-value">({{ (product?.rating || 0) | number:'1.1-1' }})</span>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="tags">
+            <th mat-header-cell *matHeaderCellDef class="header-cell"> Tags </th>
+            <td mat-cell *matCellDef="let product" class="cell tags-cell"> 
+              <span
+                *ngFor="let tag of product.tags"
+                class="badge bg-success me-1 mb-1"
+                style="width: 80%; height: 100%; "
+              >
+                {{ tag }}
+              </span>
+            </td>
+          </ng-container>
+      <ng-container matColumnDef="brand">
+        <th mat-header-cell *matHeaderCellDef class="header-cell"> Brand </th>
+        <td mat-cell *matCellDef="let product" class="cell"> {{product.brand}} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay" class="header-row"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
+    <mat-paginator
+     [pageSizeOptions]="[5, 10, 20]"
+     showFirstLastButtons
+     
+     aria-label="Select page of periodic elements">,
+    </mat-paginator>
+  </div>
+</div>

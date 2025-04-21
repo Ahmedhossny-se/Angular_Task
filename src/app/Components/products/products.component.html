@@ -1,7 +1,14 @@
-<!-- <form class="d-flex" role="search">
-  <input [(ngModel)]="title" (ngModelChange)="onSearch()" class="form-control me-2" type="search" placeholder="Search By Title" aria-label="Search">
-  <button class="btn btn-outline-success" type="submit">Search</button>
-</form> -->
+<div *ngIf="loading" class="loading-overlay">
+  <div class="advanced-spinner">
+    <div class="spinner-gradient"></div>
+    <div class="spinner-inner">
+      <span class="loading-text">Processing...</span>
+      <div class="progress-track">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="search mt-5 mb-4" [class.is-searching]="isLoading">
   <input type="text" [(ngModel)]="title" (ngModelChange)="isSearching()" placeholder="Search Products By Title..." class="form-control"
   />
@@ -41,7 +48,7 @@
               <span
                 *ngFor="let tag of product.tags"
                 class="badge bg-success me-1 mb-1"
-                style="width: 80%; height: 100%; "
+                style="width: 90%; height: 100%; "
               >
                 {{ tag }}
               </span>

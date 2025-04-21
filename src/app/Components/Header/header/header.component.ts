@@ -20,19 +20,10 @@ export class HeaderComponent {
   data:any;
   length = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  constructor(private prdService: ProductsApiService) {
+  constructor() {
    }
-   isSearching()
-     {
-       this.prdService.GetProductsByTitle(this.title).subscribe({
-         next:(res:any) => {
-           this.prdListOfCat = res.products;   
-           //this.data.data = this.prdListOfCat;  
-           this.data =  new MatTableDataSource<IProduct>(res.products)
-           this.data.paginator = this.paginator; 
-           this.length = this.prdListOfCat.length;  
-           console.log(this.prdListOfCat);        
-         }
-       })    
-      }
-    }
+  //  isSearchings()
+  //    {
+  //      this.prdService.isSearching(this.title);
+  //    }
+}

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild , Injectable} from '@angular/core';
+import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild , Injectable, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IProduct } from 'src/app/Models/IProduct';
 import { ProductsApiService } from 'src/app/Services/products-api.service';
@@ -49,7 +49,9 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
   pageIndex = 0;
   length = 0;
   title:string = "";
-  isLoading: boolean = false;
+  isLoading: boolean = true;
+  loading = true;
+  progress = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private prdService: ProductsApiService){ 
     //[pageSize] = "pageSize"
@@ -60,24 +62,30 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
   
   }
   ngAfterViewInit(): void {
-    this.data.paginator = this.paginator; 
+    this.data.data.paginator = this.paginator; 
   }
   ngOnInit(): void {
     this.prdService.GetAllProducts().subscribe({
-      next:(res:any) => {
+      next:(res:any) => {  
         this.prdListOfCat = res.products;   
         //this.data.data = this.prdListOfCat;  
         this.data =  new MatTableDataSource<IProduct>(res.products)
         this.data.paginator = this.paginator; 
-        this.length = this.prdListOfCat.length;  
-        console.log(this.prdListOfCat);        
-      }
-    })    
+        this.length = this.prdListOfCat.length;            
+      },
+      error: (err) => {
+        console.error('Error loading products:', err);
+      },
+      complete: () => {
+        this.loading = false;
+        this.isLoading = false;
+      }  
+    })  
   }
 
   isSearching()
-  {
-    this.isLoading = true;    
+  {    
+    this.loading = true;
     this.prdService.GetProductsByTitle(this.title).subscribe({
       next:(res:any) => {
         this.prdListOfCat = res.products;   
@@ -85,9 +93,14 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
         this.data =  new MatTableDataSource<IProduct>(res.products)
         this.data.paginator = this.paginator; 
         this.length = this.prdListOfCat.length;  
-        console.log(this.prdListOfCat);        
-      }
-    })    
-    this.isLoading = false;   
+      },
+      error: (err) => {
+        console.error('Error loading products:', err);
+      },
+      complete: () => {
+        this.loading = false;
+        this.isLoading = false;
+      }  
+    })     
   }
-}
+} 

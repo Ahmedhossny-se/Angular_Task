@@ -1,4 +1,5 @@
 export interface IProduct {
+    images:string[];
     id:number;
     title:string;
     description:string;

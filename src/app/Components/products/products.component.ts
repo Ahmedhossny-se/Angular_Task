@@ -40,7 +40,7 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
 })
 export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
   prdListOfCat:IProduct[]=[];
-  columnsToDisplay = ['title','description','price','rating','tags','brand']
+  columnsToDisplay = ['images','title','description','price','rating','tags','brand']
   selectedValue!:number;
   star!:number;
   rating:any;
@@ -50,7 +50,7 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
   length = 0;
   title:string = "";
   isLoading: boolean = true;
-  loading = true;
+  loading = false;
   progress = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private prdService: ProductsApiService){ 

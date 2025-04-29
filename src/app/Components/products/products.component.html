@@ -83,7 +83,7 @@
      aria-label="Select page of periodic elements"
      [length]="totalItems"
      [pageSize]="pageSize"
-     (page)="this.pageEvent = setPage($event)"
+     (page)="setPage($event)"
      class="custom-paginator">
     </mat-paginator>
     <!-- @if (data) 

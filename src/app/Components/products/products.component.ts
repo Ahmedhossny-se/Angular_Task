@@ -30,19 +30,19 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
     if (length === 0) {
       return $localize`Page 1 of 1`;
     }
-    this.prdObj.pageNo = page;
-    this.prdObj.pageSize = pageSize;
-    if(page > this.pageIndex && this.prdObj.searchLoading )
-    {
-      console.log(page,this.pageIndex);
-      this.prdObj.test1 = 15;
-      this.prdObj.changePage(0,20);
-      this.pageIndex++;
-    }    
-    if(page < this.pageIndex)
-    {
-      this.pageIndex = page -1;
-    }
+    // this.prdObj.pageNo = page;
+    // this.prdObj.pageSize = pageSize;
+    // if(page > this.pageIndex && this.prdObj.searchLoading )
+    // {
+    //   console.log(page,this.pageIndex);
+    //   this.prdObj.test1 = 15;
+    //   this.prdObj.changePage(0,20);
+    //   this.pageIndex++;
+    // }    
+    // if(page < this.pageIndex)
+    // {
+    //   this.pageIndex = page -1;
+    // }
     const amountPages = Math.ceil(length / pageSize);
     return $localize`Page ${page + 1} of ${amountPages}`;    
   }   
@@ -155,13 +155,13 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
     this.prdService.GetAllProducts(page,limit).subscribe({
       next:(res:any) => {  
         this.prdListOfCat = res.products;   
-        //this.data.data = this.prdListOfCat;  
-        this.data =  new MatTableDataSource<IProduct>(res.products)
-        this.data.paginator = this.paginator; 
+        this.data = this.prdListOfCat;
+        //this.data =  new MatTableDataSource<IProduct>(res.products)
+        //this.data.paginator = this.paginator;         
         this.length = this.prdListOfCat.length;
-        this.totalItems = res.totalItems;        
-        this.loaderService.beginLoad();
-        
+        this.totalItems = res.total;    
+        console.log(this.totalItems);  
+        this.loaderService.beginLoad();        
       },
       error: (err) => {
         console.error('Error loading products:', err);
@@ -169,13 +169,13 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
       complete: () => {
         this.loading = false;
         //this.searchLoading = false;
-        this.loaderService.endLoad();
+        this.loaderService.endLoad();     
         if (this.paginator) {
-          this.paginator.length = this.prdListOfCat.length;
+          this.paginator.length = this.totalItems;
           this.paginator.pageIndex = page;
-          console.log(this.totalItems);          
+          console.log(page);          
           //this.paginator.disabled = false;
-        }
+        }  
       }  
     })
   }
@@ -202,15 +202,15 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
     })
   }
   //event = this.setPage(this.pageEvent);
-  setPage(event): PageEvent
+  setPage(event)
   {
     
     // this.paginator.next({
     //   pageIndex: event.pageIndex,
     //   pageSize: event.pageSize
     // });
-    if(!this.issorting && this.searchLoading)
-      this.changePage(event.pageNo,event.pageSize);
+    if(!this.issorting || this.searchLoading)
+      this.changePage(event.pageIndex,event.pageSize);
 
     //this.paginator.disabled = false;
     //this.data.data.paginator = this.paginator;

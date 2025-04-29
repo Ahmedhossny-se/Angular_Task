@@ -18,12 +18,14 @@ import { HeaderComponent } from './Components/Header/header/header.component';
 import { InterceptorService } from './Services/interceptor.service';
 import { TokenInterceptorService } from './Services/token-interceptor.service';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { LoginComponent } from './Components/Login/Login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

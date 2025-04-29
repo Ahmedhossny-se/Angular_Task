@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+//import { FormsModule } from '@angular/forms';
 import { UserAuthService } from 'src/app/Services/user-auth.service';
 
 @Component({
@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
       },
       error: (error) => {
         console.error('Login failed!', error);
-        // Handle error (e.g., show error message)
       }
     });
   }

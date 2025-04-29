@@ -9,8 +9,6 @@ import { Login } from '../Models/Login';
   providedIn: 'root'
 })
 export class ProductsApiService {
-
-  //  APIURL:string =  'https://dummyjson.com/products?limit=0&skip=0&select=title,description,price,rating,tags,brand'
   APIURL:string =  'https://dummyjson.com/products'
   LoginUrl:string = 'https://dummyjson.com/auth/login'
   body = {
@@ -19,17 +17,9 @@ export class ProductsApiService {
   };
   constructor(private httpClient: HttpClient) { }
 
-  // GetAllProducts(): Observable<IProduct[]>
-  // {
-  //   return this.httpClient.get<IProduct[]>(`${this.APIURL}`).pipe(
-  //     delay(100)
-  //   );
-  // }
-
   GetAllProducts(page:number = 1,limit: number = 10): Observable<IProduct[]>
   {
     let skip = (page - 1) * limit;
-    //let url = `${this.APIURL}?limit=${limit}&skip=${skip}`
     let url = `${this.APIURL}?limit=${limit}&skip=${skip}&sortBy=price&order=asc`
     return this.httpClient.get<IProduct[]>(`${url}`).pipe(
       delay(100)

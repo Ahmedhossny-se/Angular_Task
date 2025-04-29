@@ -75,29 +75,11 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(public prdService: ProductsApiService,public loaderService: LoaderService){ 
-    //[pageSize] = "pageSize"
-     //[length] = "data.data.length"
-     //this.data = new MatTableDataSource<IProduct>([]);
   }
   ngOnChanges(changes: SimpleChanges): void {
   }
   ngAfterViewInit(): void {
-    //this.data.paginator = this.paginator;
     console.log(this.sort.active);
-    // this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0) );
-    // merge(this.sort.sortChange, this.paginator.page)
-    //   .pipe(
-    //     startWith({}),
-    //     switchMap(() => {
-    //       this.loading = true;
-    //       console.log(this.sort.active);
-    //       return this.data!.getRepoIssues(
-    //         this.sort.active,
-    //         this.sort.direction,
-    //         this.paginator.pageIndex,
-    //       ).pipe(catchError(() => observableOf(null)));
-    //     }),      
-    //   )
   }
   ngOnInit(): void {
     this.getAllProducts();
@@ -112,7 +94,6 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
       complete: () => {      
       }  
     });
-    //console.log(this.sort.ngOnChanges);
   }
 
   getAllProducts()
@@ -120,8 +101,7 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
     this.loading = true;
     this.prdService.GetAllProducts().subscribe({
       next:(res:any) => {  
-        this.prdListOfCat = res.products;   
-        //this.data.data = this.prdListOfCat;  
+        this.prdListOfCat = res.products;    
         this.data =  new MatTableDataSource<IProduct>(res.products)
         this.data.paginator = this.paginator; 
         this.length = this.prdListOfCat.length;
@@ -145,7 +125,6 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
     this.prdService.GetProductsByTitle(this.title).subscribe({
       next:(res:any) => {
         this.prdListOfCat = res.products;   
-        //this.data.data = this.prdListOfCat;  
         this.data =  new MatTableDataSource<IProduct>(res.products)
         this.data.paginator = this.paginator; 
         this.length = this.prdListOfCat.length;  
@@ -167,9 +146,7 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
     this.prdService.GetAllProducts(page,limit).subscribe({
       next:(res:any) => {  
         this.prdListOfCat = res.products;   
-        this.data = this.prdListOfCat;
-        //this.data =  new MatTableDataSource<IProduct>(res.products)
-        //this.data.paginator = this.paginator;         
+        this.data = this.prdListOfCat;     
         this.length = this.prdListOfCat.length;
         this.totalItems = res.total;    
         console.log(this.totalItems);  
@@ -180,13 +157,11 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
       },
       complete: () => {
         this.loading = false;
-        //this.searchLoading = false;
         this.loaderService.endLoad();     
         if (this.paginator) {
           this.paginator.length = this.totalItems;
           this.paginator.pageIndex = page;
           console.log(page);          
-          //this.paginator.disabled = false;
         }  
       }  
     })
@@ -197,7 +172,6 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
     this.prdService.sortProducts(this.pageNo,this.pageSize,this.sort.active,this.sort.direction).subscribe({
       next:(res:any) => {  
         this.prdListOfCat = res.products; 
-        //this.data.data = this.prdListOfCat;  
         this.data =  new MatTableDataSource<IProduct>(res.products)
         this.data.paginator = this.paginator; 
         this.length = this.prdListOfCat.length;
@@ -213,19 +187,11 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
       } 
     })
   }
-  //event = this.setPage(this.pageEvent);
   setPage(event)
   {
-    
-    // this.paginator.next({
-    //   pageIndex: event.pageIndex,
-    //   pageSize: event.pageSize
-    // });
     if(!this.issorting || this.searchLoading)
       this.changePage(event.pageIndex,event.pageSize);
 
-    //this.paginator.disabled = false;
-    //this.data.data.paginator = this.paginator;
     console.log(event.pageIndex)
   }
 } 

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http'
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
 import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +15,9 @@ import { ProductsApiService } from './Services/products-api.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { FooterComponent } from './Components/Footer/footer/footer.component';
 import { HeaderComponent } from './Components/Header/header/header.component';
+import { InterceptorService } from './Services/interceptor.service';
+import { TokenInterceptorService } from './Services/token-interceptor.service';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -32,9 +35,14 @@ import { HeaderComponent } from './Components/Header/header/header.component';
     HttpClientModule,
     MatPaginatorModule,
     MatIconModule,
-    FormsModule,MatFormFieldModule
+    FormsModule,
+    MatFormFieldModule,
+    MatSortModule
 ],
-  providers: [ProductsApiService],
+  providers: [ProductsApiService
+    ,{provide:HTTP_INTERCEPTORS,useClass:InterceptorService,multi: true},
+    {provide:HTTP_INTERCEPTORS,useClass:TokenInterceptorService,multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

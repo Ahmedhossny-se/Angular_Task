@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { IProduct } from 'src/app/Models/IProduct';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
+import { ApiResponce } from '../Models/ApiResponce';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +13,39 @@ export class ProductsApiService {
   APIURL:string =  'https://dummyjson.com/products'
   constructor(private httpClient: HttpClient) { }
 
-  GetAllProducts(): Observable<IProduct[]>
+  // GetAllProducts(): Observable<IProduct[]>
+  // {
+  //   return this.httpClient.get<IProduct[]>(`${this.APIURL}`).pipe(
+  //     delay(100)
+  //   );
+  // }
+
+  GetAllProducts(page:number = 1,limit: number = 10): Observable<IProduct[]>
   {
-    return this.httpClient.get<IProduct[]>(`${this.APIURL}`);
+    let skip = (page - 1) * limit;
+    //let url = `${this.APIURL}?limit=${limit}&skip=${skip}`
+    let url = `${this.APIURL}?limit=${limit}&skip=${skip}&sortBy=price&order=asc`
+    return this.httpClient.get<IProduct[]>(`${url}`).pipe(
+      delay(100)
+    );
+  }
+
+  GetProductsByTitle(title: string): Observable<ApiResponce>
+  {
+    return this.httpClient.get<ApiResponce>(this.APIURL+`/search?q=${title}`)
+  }
+
+  sortProducts(page:number = 1,limit: number = 10,sortBy:string = "price",order:string = "asc")
+  {
+    let url = `${this.APIURL}?limit=0&skip=20&sortBy=${sortBy}&order=${order}`
+    return this.httpClient.get<IProduct[]>(`${url}`).pipe(
+      delay(100)
+    );
   }
 
   GetProductsByCatId(catId: number): Observable<IProduct[]>
   {
     return this.httpClient.get<IProduct[]>(`${this.APIURL}/products?categoryid=${catId}`);
-  }
-
-  GetProductsByTitle(title: string): Observable<IProduct>
-  {
-    return this.httpClient.get<IProduct>(this.APIURL+`/search?q=${title}`)
   }
 
   AddProduct(newprd: IProduct)

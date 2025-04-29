@@ -1,4 +1,5 @@
-<div *ngIf="loading" class="loading-overlay">
+<!-- loaderService.isLoading | async -->
+<div *ngIf="loaderService.isLoading | async" class="loading-overlay">
   <div class="advanced-spinner">
     <div class="spinner-gradient"></div>
     <div class="spinner-inner">
@@ -9,31 +10,42 @@
     </div>
   </div>
 </div>
-<div class="search mt-5 mb-4" [class.is-searching]="isLoading">
+<div class="search mt-5 mb-4" [class.is-searching]="searchLoading">
   <input type="text" [(ngModel)]="title" (ngModelChange)="isSearching()" placeholder="Search Products By Title..." class="form-control"
   />
 </div>
 <div>
   <div class="table-container ps-10">
-    <table mat-table [dataSource]="data" class="mat-elevation-z8">
+    <table mat-table [dataSource]="data" class="mat-elevation-z8" matSort matSortActive="created" matSortDisableClear matSortDirection="desc" (matSortChange)="sortProducts($event)">
       <ng-container matColumnDef="images">
-        <th mat-header-cell *matHeaderCellDef class="header-cell"> . </th>
-        <td mat-cell *matCellDef="let product" class="cell"><img [src]="product.images[0]" alt="product Picture" style="width: 60px; height: 60px;"></td>
+        <th mat-header-cell *matHeaderCellDef class="header-cell"> Images </th>
+        <td mat-cell *matCellDef="let product" class="cell">
+          <!-- <img [src]="product.images[0]" alt="product Picture" style="width: 60px; height: 60px;"> -->
+           <img [src]="product.images[0]" alt="Product picture" 
+                style="width: 80px; 
+                        height: 80px;
+                        object-fit: contain;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        transition: transform 0.3s ease;
+                        background: #f5f5f5;">
+        </td>
       </ng-container>
+      <!-- class="header-cell" -->
       <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef class="header-cell"> Title </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"> Title </th>
         <td mat-cell *matCellDef="let product" class="cell"> {{product.title}} </td>
       </ng-container>
       <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef class="header-cell"> Description </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"> Description </th>
         <td mat-cell *matCellDef="let product" class="cell"> {{product.description}} </td>
       </ng-container>
       <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef class="header-cell"> Price </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"> Price </th>
         <td mat-cell *matCellDef="let product" class="cell"> {{product.price | currency: 'EUR': 'symbol-narrow'}} </td>
       </ng-container>
       <ng-container matColumnDef="rating">
-        <th mat-header-cell *matHeaderCellDef class="header-cell"> Rating </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"> Rating </th>
         <td mat-cell *matCellDef="let product" class="cell">          
           <div class="rating-icon">
             <div *ngFor="let star of [1,2,3,4,5]" class="star-container">
@@ -47,7 +59,7 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="tags">
-            <th mat-header-cell *matHeaderCellDef class="header-cell"> Tags </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"> Tags </th>
             <td mat-cell *matCellDef="let product" class="cell tags-cell"> 
               <span
                 *ngFor="let tag of product.tags"
@@ -59,7 +71,7 @@
             </td>
           </ng-container>
       <ng-container matColumnDef="brand">
-        <th mat-header-cell *matHeaderCellDef class="header-cell"> Brand </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"> Brand </th>
         <td mat-cell *matCellDef="let product" class="cell"> {{product.brand}} </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay" class="header-row"></tr>
@@ -67,9 +79,19 @@
     </table>
     <mat-paginator
      [pageSizeOptions]="[5, 10, 20]"
-     showFirstLastButtons
-     
-     aria-label="Select page of periodic elements">,
+     showFirstLastButtons     
+     aria-label="Select page of periodic elements"
+     [length]="totalItems"
+     [pageSize]="pageSize"
+     (page)="this.pageEvent = setPage($event)"
+     class="custom-paginator">
     </mat-paginator>
+    <!-- @if (data) 
+    {
+      (page)="this.pageEvent = setPage($event)"
+    }
+    @else {
+
+    } -->
   </div>
 </div>

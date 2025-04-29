@@ -3,6 +3,7 @@ import { IProduct } from 'src/app/Models/IProduct';
 import { HttpClient } from '@angular/common/http';
 import { delay, Observable } from 'rxjs';
 import { ApiResponce } from '../Models/ApiResponce';
+import { Login } from '../Models/Login';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,11 @@ export class ProductsApiService {
 
   //  APIURL:string =  'https://dummyjson.com/products?limit=0&skip=0&select=title,description,price,rating,tags,brand'
   APIURL:string =  'https://dummyjson.com/products'
+  LoginUrl:string = 'https://dummyjson.com/auth/login'
+  body = {
+    username: 'emilys',
+    password: 'emilyspass'
+  };
   constructor(private httpClient: HttpClient) { }
 
   // GetAllProducts(): Observable<IProduct[]>
@@ -48,6 +54,10 @@ export class ProductsApiService {
     return this.httpClient.get<IProduct[]>(`${this.APIURL}/products?categoryid=${catId}`);
   }
 
+  Login()
+  {
+    return this.httpClient.post<Login[]>(`${this.LoginUrl}`,this.body);
+  }
   AddProduct(newprd: IProduct)
   {
   }

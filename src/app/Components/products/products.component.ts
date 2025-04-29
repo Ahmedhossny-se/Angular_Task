@@ -71,6 +71,7 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
   totalItems:number;
   pageEvent: PageEvent;
   issorting:boolean = false;
+  token:string;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(public prdService: ProductsApiService,public loaderService: LoaderService){ 
@@ -100,6 +101,17 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
   }
   ngOnInit(): void {
     this.getAllProducts();
+    this.prdService.Login().subscribe({
+      next:(res:any) => {  
+        this.token = res.accessToken;
+        console.log(this.token);
+      },
+      error: (err) => {
+        console.error('Error loading products:', err);
+      },
+      complete: () => {      
+      }  
+    });
     //console.log(this.sort.ngOnChanges);
   }
 
@@ -215,6 +227,5 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
     //this.paginator.disabled = false;
     //this.data.data.paginator = this.paginator;
     console.log(event.pageIndex)
-    return event.pageIndex;    
   }
 } 

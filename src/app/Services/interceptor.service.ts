@@ -17,5 +17,5 @@ export class InterceptorService implements HttpInterceptor {
         }
       )
     )
-  }   
+  }
 }

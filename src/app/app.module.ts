@@ -19,13 +19,21 @@ import { InterceptorService } from './Services/interceptor.service';
 import { TokenInterceptorService } from './Services/token-interceptor.service';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { LoginComponent } from './Components/Login/Login.component';
+import { CommonModule } from '@angular/common';
+import { ProductFormComponent } from './Components/product-form/product-form.component';
+import { MainLayoutComponent } from './Components/main-layout/main-layout.component';
+import { NotFoundComponent } from './Components/not-found/not-found.component';
+import { RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
     HeaderComponent,
-    LoginComponent
+    LoginComponent,
+    ProductFormComponent,
+    MainLayoutComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +47,10 @@ import { LoginComponent } from './Components/Login/Login.component';
     MatIconModule,
     FormsModule,
     MatFormFieldModule,
-    MatSortModule
+    MatSortModule,
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule
 ],
   providers: [ProductsApiService
     ,{provide:HTTP_INTERCEPTORS,useClass:InterceptorService,multi: true},

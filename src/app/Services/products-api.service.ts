@@ -44,22 +44,27 @@ export class ProductsApiService {
     return this.httpClient.get<IProduct[]>(`${this.APIURL}/products?categoryid=${catId}`);
   }
 
+  GetProductById(PId:number): Observable<IProduct[]>
+  {
+    return this.httpClient.get<IProduct[]>(`${this.APIURL}/${PId}`);
+  }
+
   Login()
   {
     return this.httpClient.post<Login[]>(`${this.LoginUrl}`,this.body);
   }
-  AddProduct(newprd: IProduct)
+  AddProduct(newprd: FormData): Observable<any>
   {
+    return this.httpClient.post<IProduct[]>(`${this.APIURL}/add`,newprd);
   }
 
   updateProduct(prdId: number, updatePrd:IProduct)
   {
-    
+    return this.httpClient.put<IProduct[]>(`${this.APIURL}/${prdId}`,updatePrd);
   }
 
   deleteProduct(prdId: number)
   {
     
-  }
-
+  } 
 }

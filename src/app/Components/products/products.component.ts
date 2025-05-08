@@ -14,6 +14,7 @@ import { LoaderService } from 'src/app/Services/loader.service';
 import {DatePipe} from '@angular/common';
 import {catchError, map, startWith, switchMap} from 'rxjs/operators';
 import {merge, Observable, of as observableOf} from 'rxjs';
+import { Router, RouterModule } from '@angular/router';
 
 @Injectable()
 export class MyCustomPaginatorIntl implements MatPaginatorIntl {
@@ -51,14 +52,14 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule,MatPaginatorModule,MatTableModule,MatIconModule,MatFormFieldModule,FormsModule,MatSortModule],
+  imports: [CommonModule,MatPaginatorModule,MatTableModule,MatIconModule,MatFormFieldModule,FormsModule,MatSortModule,RouterModule],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
   providers: [ProductsApiService, {provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}]
 })
 export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
   prdListOfCat:IProduct[]=[];
-  columnsToDisplay = ['images','title','description','price','rating','tags','brand']
+  columnsToDisplay = ['images','title','description','price','rating','tags','brand','actions']
   data:any;
   length = 0;
   title:string = "";
@@ -74,7 +75,7 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
   token:string;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  constructor(public prdService: ProductsApiService,public loaderService: LoaderService){ 
+  constructor(public prdService: ProductsApiService,public loaderService: LoaderService,route: Router){ 
   }
   ngOnChanges(changes: SimpleChanges): void {
   }
@@ -95,7 +96,7 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
       }  
     });
   }
-
+  
   getAllProducts()
   {
     this.loading = true;
@@ -140,6 +141,7 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
       }  
     })     
   }
+
   changePage(page:number,limit:number)
   {
     this.loading = true;
@@ -166,6 +168,7 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
       }  
     })
   }
+
   sortProducts(sort: Sort):void
   {    
     this.issorting = true;
@@ -187,6 +190,7 @@ export class ProductsComponent implements OnInit, AfterViewInit,OnChanges {
       } 
     })
   }
+
   setPage(event)
   {
     if(!this.issorting || this.searchLoading)
